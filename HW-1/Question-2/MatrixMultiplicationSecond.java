@@ -28,30 +28,27 @@ public class MatrixMultiplicationSecond {
         System.out.println("Double Matrix Multiplication Time Is: " + durationDouble + " seconds");
     }
 
-    // Generate a random integer matrix
     public static int[][] genRandomIntMatrix(int rows, int cols) {
         Random random = new Random();
         int[][] matrix = new int[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                matrix[i][j] = random.nextInt(1000); // Change range as needed
+                matrix[i][j] = random.nextInt(1000);
             }
         }
         return matrix;
     }
 
-    // Generate a random double matrix
     public static double[][] genRandomDoubleMatrix(int rows, int cols) {
         Random random = new Random();
         double[][] matrix = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                matrix[i][j] = random.nextDouble() * 1000.0; // Change range as needed
+                matrix[i][j] = random.nextDouble() * 1000.0;
             }
         }
         return matrix;
     }
-
 
     public static int[][] multIntMatrices(int[][] A, int[][] B) {
         int rowsA = A.length;
@@ -69,7 +66,6 @@ public class MatrixMultiplicationSecond {
 
         return output;
     }
-
 
     public static double[][] multDoubleMatrices(double[][] A, double[][] B) {
         int rowsA = A.length;
