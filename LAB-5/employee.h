@@ -17,5 +17,6 @@ struct Employee {
 void printEmployee(const struct Employee* employee);
 int validateEmployee(const struct Employee* employee);
 int getNextAvailableId(const struct Employee* employees, int numEmployees);
+void readAndSortEmployeeData(struct Employee* employees, int* numEmployees);
 
 #endif // EMPLOYEE_H

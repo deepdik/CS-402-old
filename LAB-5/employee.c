@@ -25,3 +25,26 @@ int getNextAvailableId(const struct Employee* employees, int numEmployees) {
     }
     return nextId;
 }
+
+
+void readAndSortEmployeeData(struct Employee* employees, int* numEmployees) {
+    // Read and parse the employee data from the input file
+    // Sort the employees by their ID in ascending order
+    for (int i = 0; i < *numEmployees - 1; i++) {
+        for (int j = 0; j < *numEmployees - i - 1; j++) {
+            if (employees[j].id > employees[j + 1].id) {
+                // Swap the employees
+                struct Employee temp = employees[j];
+                employees[j] = employees[j + 1];
+                employees[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+

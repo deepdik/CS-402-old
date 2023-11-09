@@ -49,6 +49,9 @@ int main(int argc, char* argv[]) {
 
 
     close_file();
+    // Call the function to read and sort employee data
+    readAndSortEmployeeData(employees, &numEmployees);
+
 
     int choice;
 
@@ -61,13 +64,17 @@ int main(int argc, char* argv[]) {
         printf("  (2) Lookup by ID\n");
         printf("  (3) Lookup by Last Name\n");
         printf("  (4) Add an Employee\n");
-        printf("  (5) Quit\n");
+        printf("  (5) Remove an Employee\n");
+        printf("  (6) Update an Employee's Information\n");
+        printf("  (7) Print the M employees with the highest salaries\n");
+        printf("  (8) Find all employees with matching last name\n");
+        printf("  (9) Quit\n");
         printf("----------------------------------\n");
         printf("Enter your choice: ");
 
-        if (scanf("%d", &choice) != 1 || choice < 1 || choice > 5) {
+        if (scanf("%d", &choice) != 1 || choice < 1 || choice > 9) {
             validChoice = 0;
-            printf("Invalid input. Please enter a number between 1 and 5.\n");
+            printf("Invalid input. Please enter a number between 1 and 9.\n");
             while (getchar() != '\n');
         }
 
@@ -85,12 +92,29 @@ int main(int argc, char* argv[]) {
                 case 4:
                     addEmployee(employees, &numEmployees);
                     break;
+                
                 case 5:
+                    removeEmployee(employees, &numEmployees);
+                    break;
+
+                case 6:
+                    updateEmployee(employees, numEmployees);
+                    break;
+                case 7:
+                    printHighestSalaries(employees, numEmployees);
+                    break;
+                case 8:
+                    findAllEmployeesByLastName(employees, numEmployees);
+                    break;
+                case 9:
                     printf("Goodbye!\n");
+                    break;
+                default:
+                    printf("Invalid choice. Please enter a valid option.\n");
                     break;
             }
         }
-    } while (choice != 5);
+    } while (choice != 9);
 
     return 0;
 }
