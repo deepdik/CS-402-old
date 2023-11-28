@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
     float median = calculateMedian(data, numValues);
     float stddev = calculateStandardDeviation(data, numValues, mean);
     
-    // Calculate mode
     float *modes = calculateMode(data, numValues, &numModes);
 
     float geometricMean = calculateGeometricMean(data, numValues);
@@ -31,6 +30,6 @@ int main(int argc, char *argv[]) {
     printResults(numValues, capacity, mean, median, stddev, modes, numModes, geometricMean, harmonicMean);
 
     free(data);
-    free(modes); // Remember to free the memory allocated for modes
+    free(modes);
     return 0;
 }

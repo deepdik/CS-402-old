@@ -95,7 +95,6 @@ bool allValuesUnique(const float *data, int numValues) {
 }
 
 // Modified calculateMode function
-// Modified calculateMode function
 float *calculateMode(const float *data, int numValues, int *numModes) {
     if (numValues == 0 || allValuesUnique(data, numValues)) {
         *numModes = 0;
