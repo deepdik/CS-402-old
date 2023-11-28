@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include "stats.h"
 
-
-
-
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("Usage: %s <input_file>\n", argv[0]);
@@ -12,7 +9,7 @@ int main(int argc, char *argv[]) {
     }
 
     const char *filename = argv[1];
-    int numValues, capacity;
+    int numValues, capacity, numModes;
     float *data = readDataFromFile(filename, &numValues, &capacity);
 
     if (numValues == 0) {
@@ -24,9 +21,16 @@ int main(int argc, char *argv[]) {
     float mean = calculateMean(data, numValues);
     float median = calculateMedian(data, numValues);
     float stddev = calculateStandardDeviation(data, numValues, mean);
+    
+    // Calculate mode
+    float *modes = calculateMode(data, numValues, &numModes);
 
-    printResults(numValues, capacity, mean, median, stddev);
+    float geometricMean = calculateGeometricMean(data, numValues);
+    float harmonicMean = calculateHarmonicMean(data, numValues);
+
+    printResults(numValues, capacity, mean, median, stddev, modes, numModes, geometricMean, harmonicMean);
 
     free(data);
+    free(modes); // Remember to free the memory allocated for modes
     return 0;
 }

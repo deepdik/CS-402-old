@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "stats.h"
+#include <stdbool.h>
 
 // Function to read data from a file and store it in a dynamically allocated array
 float *readDataFromFile(const char *filename, int *numValues, int *capacity) {
@@ -80,13 +81,135 @@ float calculateStandardDeviation(const float *data, int numValues, float mean) {
     return sqrt(sum / numValues);
 }
 
+
+// Function to check if all values in the dataset are unique
+bool allValuesUnique(const float *data, int numValues) {
+    for (int i = 0; i < numValues - 1; i++) {
+        for (int j = i + 1; j < numValues; j++) {
+            if (data[i] == data[j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Modified calculateMode function
+// Modified calculateMode function
+float *calculateMode(const float *data, int numValues, int *numModes) {
+    if (numValues == 0 || allValuesUnique(data, numValues)) {
+        *numModes = 0;
+        return NULL;  // No mode for an empty set or when all values are unique
+    }
+
+    int maxStreak = 1;
+    int currentStreak = 1;
+    int modeCount = 1;
+    float mode = data[0];
+
+    for (int i = 0; i < numValues - 1; i++) {
+        if (data[i] == data[i + 1]) {
+            currentStreak++;
+        } else {
+            currentStreak = 1;
+        }
+
+        if (currentStreak > maxStreak) {
+            maxStreak = currentStreak;
+            modeCount = 1;
+            mode = data[i];
+        } else if (currentStreak == maxStreak) {
+            // If the current streak equals the maximum streak, consider it another mode
+            modeCount++;
+        }
+    }
+
+    // Check if all values occurred only once
+    if (maxStreak == 1) {
+        *numModes = 0;
+        return NULL;
+    }
+
+    *numModes = modeCount;
+    
+    // Allocate memory for the modes array
+    float *modes = malloc(sizeof(float) * modeCount);
+    if (modes == NULL) {
+        perror("Error allocating memory");
+        exit(1);
+    }
+
+    // Fill the modes array
+    for (int i = 0; i < modeCount; i++) {
+        modes[i] = mode;
+    }
+
+    return modes;
+}
+
+
+
+float calculateGeometricMean(const float *data, int numValues) {
+    if (numValues == 0) {
+        return 0;  // Geometric mean is undefined for an empty set
+    }
+
+    // Calculate the product of all values
+    double product = 1.0;
+
+    for (int i = 0; i < numValues; i++) {
+        if (data[i] <= 0) {
+            // Geometric mean is undefined for non-positive values
+            return 0;
+        }
+        product *= data[i];
+    }
+
+    // Calculate the geometric mean
+    return pow(product, 1.0 / numValues);
+}
+
+float calculateHarmonicMean(const float *data, int numValues) {
+    if (numValues == 0) {
+        return 0;  // Harmonic mean is undefined for an empty set
+    }
+
+    // Calculate the sum of reciprocals
+    double reciprocalSum = 0.0;
+
+    for (int i = 0; i < numValues; i++) {
+        if (data[i] == 0) {
+            // Harmonic mean is undefined if any value is zero
+            return 0;
+        }
+        reciprocalSum += 1.0 / data[i];
+    }
+
+    // Calculate the harmonic mean
+    return numValues / reciprocalSum;
+}
+
+
 // Function to print the results
-void printResults(int numValues, int capacity, float mean, float median, float stddev) {
+void printResults(int numValues, int capacity, float mean, float median, float stddev, float *modes, int numModes, float geometricMean, float harmonicMean) {
     printf("Results:\n");
     printf("--------\n");
     printf("Num values:            %d\n", numValues);
     printf("      mean:        %.3f\n", mean);
     printf("    median:        %.3f\n", median);
     printf("    stddev:        %.3f\n", stddev);
+
+    if (numModes == 0) {
+        printf("      mode:       (0.000) No mode found. All values are unique\n");
+    } else {
+        printf("      mode(s):");
+        for (int i = 0; i < numModes; i++) {
+            printf(" %.3f", modes[i]);
+        }
+        printf("\n");
+    }
+
+    printf("  geometric mean:  %.3f\n", geometricMean);
+    printf("  harmonic mean:   %.3f\n", harmonicMean);
     printf("Unused array capacity: %d\n", capacity - numValues);
 }
